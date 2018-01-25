@@ -1,0 +1,4 @@
+/Users/kdouveno/workspace/printf/src/pf_putchar.c:13:10: fatal error: 'ft_printf.h' file not found
+#include "ft_printf.h"
+         ^~~~~~~~~~~~~
+1 error generated.
