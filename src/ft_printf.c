@@ -14,32 +14,60 @@
 
 t_ends	*ft_ends()
 {
-	static t_ends out[3];
+	static t_ends out[41];
 	int i;
 
 	i = 0;
-	if (out[0].end == NULL){
-		// (t_ends){"hhd", &pf_putchard};
-		// (t_ends){"hhu", &pf_uchard};
-		// (t_ends){"lld", &pf_putllong};
-		// (t_ends){"llu", &pf_putullong};
-		// (t_ends){"llf", &pf_putdouble};
-		// (t_ends){"hd", &pf_putshort};
-		// (t_ends){"ld", &pf_putlong};
-		// (t_ends){"zd", &pf_putsizet};
-		// (t_ends){"jd", &pf_putintmax};
+	if (out[0].end == NULL)
+	{
+		out[i++] = (t_ends){"lld", &pf_putllong};
+		out[i++] = (t_ends){"hhd", &pf_putchard};
+		out[i++] = (t_ends){"hhu", &pf_putuchard};
+		out[i++] = (t_ends){"llu", &pf_putullong};
+		out[i++] = (t_ends){"hhx", &pf_putxchard};
+		out[i++] = (t_ends){"llx", &pf_putxllong};
+		out[i++] = (t_ends){"hhX", &pf_putmxchard};
+		out[i++] = (t_ends){"llX", &pf_putmxllong};
 
-		// (t_ends){"hu", &pf_putushort};
-		// (t_ends){"lu", &pf_putulong};
-		// (t_ends){"zu", &pf_putusizet};
-		// (t_ends){"ju", &pf_putuintmax};
-		// (t_ends){"lf", &pf_putdouble};
+		out[i++] = (t_ends){"hd", &pf_putshort};
+		out[i++] = (t_ends){"ld", &pf_putlong};
+		out[i++] = (t_ends){"zd", &pf_putllong};
+		out[i++] = (t_ends){"jd", &pf_putllong};
+
+		out[i++] = (t_ends){"ls", &pf_putuni};
+		out[i++] = (t_ends){"lc", &pf_putcuni};
+
+		out[i++] = (t_ends){"lu", &pf_putulong};
+		out[i++] = (t_ends){"hu", &pf_putushort};
+		out[i++] = (t_ends){"ju", &pf_putullong};
+		out[i++] = (t_ends){"zu", &pf_putullong};
+		out[i++] = (t_ends){"lU", &pf_putullong};
+		out[i++] = (t_ends){"hU", &pf_putullong};
+
+		out[i++] = (t_ends){"hx", &pf_putxshort};
+		out[i++] = (t_ends){"lx", &pf_putxlong};
+		out[i++] = (t_ends){"jx", &pf_putxllong};
+		out[i++] = (t_ends){"zx", &pf_putxllong};
+
+		out[i++] = (t_ends){"hX", &pf_putmxshort};
+		out[i++] = (t_ends){"lX", &pf_putmxlong};
+		out[i++] = (t_ends){"jX", &pf_putmxllong};
+		out[i++] = (t_ends){"zX", &pf_putmxllong};
+
 		out[i++] = (t_ends){"d", &pf_putint};
+		out[i++] = (t_ends){"o", &pf_putoint};
+		out[i++] = (t_ends){"x", &pf_putxint};
+		out[i++] = (t_ends){"X", &pf_putmxint};
+		out[i++] = (t_ends){"p", &pf_putpointer};
 		out[i++] = (t_ends){"f", &pf_putdouble};
-		out[i++] = (t_ends){"s", &pf_putstring};
-		// (t_ends){"u", &pf_putuint};
-		// (t_ends){"m", &pf_putmemory};
-		// (t_ends){"b", &pf_putbmemory};
+		out[i++] = (t_ends){"S", &pf_putuni};
+		out[i++] = (t_ends){"s", &pf_putstr};
+		out[i++] = (t_ends){"C", &pf_putcuni};
+		out[i++] = (t_ends){"c", &pf_putc};
+		out[i++] = (t_ends){"u", &pf_putuint};
+		out[i++] = (t_ends){"U", &pf_putullong};
+		out[i++] = (t_ends){"%", &pf_escape};
+
 	}
 	return out;
 }
@@ -68,7 +96,7 @@ void			pf_parse(char *format, int *i, va_list p)
 {
 	t_params	pa;
 
-	pa = (t_params){0,0,10,0,0,0,0};
+	pa = (t_params){0, 0, 10, 0, 0, 0, 0, 0};
 	(void)p;
 	i[0]++;
 	get_flags(format, i, &pa);
@@ -78,6 +106,16 @@ void			pf_parse(char *format, int *i, va_list p)
 
 }
 
+void			pf_escape(va_list p, t_params pa)
+{
+	(void)p;
+	if (!pa.left)
+		pf_spaces(pa.width - 1);
+	pc_putchar('%');
+	if (pa.left)
+		pf_spaces(pa.width - 1);
+}
+
 void			pf_launch(char *fo, int *i, t_params *pa, va_list p)
 {
 	int j;
@@ -85,7 +123,7 @@ void			pf_launch(char *fo, int *i, t_params *pa, va_list p)
 
 	j = 0;
 
-	while (j < 3)
+	while (j < 41)
 	{
 		k = 0;
 		while (ft_ends()[j].end[k] && ft_ends()[j].end[k] == fo[*i + k])
@@ -110,6 +148,8 @@ void			get_flags(char *fo, int *i, t_params *pa)
 			pa->pos = 1;
 		else if (fo[*i] == '0')
 			pa->zero = 1;
+		else if (fo[*i] == '#')
+				pa->hash = 1;
 		else if (fo[*i] == ' ' && pa->pos != 1)
 			pa->pos = 2;
 		i[0]++;

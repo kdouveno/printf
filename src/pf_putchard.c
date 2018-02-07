@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   pf_printer.c                                       :+:      :+:    :+:   */
+/*   pf_prcharer.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: anhuang <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -12,34 +12,39 @@
 
 #include "ft_printf.h"
 
-void	pf_putint(va_list p, t_params pa)
+void	pf_putchard(va_list p, t_params pa)
 {
-	long long nbr;
+	char nbr;
 
 	pa.width -= 1;
 	if (pa.left || pa.precision != -1)
 		pa.zero = 0;
-	nbr = va_arg(p, int);
+	nbr = (char)va_arg(p, int);
 	if (nbr > 0 && !pa.pos)
 		pa.width++;
-	pf_pint(nbr, &pa);
-	if (nbr == min_i())
+	if (nbr == 0)
+			pa.width++;
+	if (pa.precision != 0 || nbr != 0)
+		pf_pchard(nbr, &pa);
+	else
+		pa.left = 1;
+	if (nbr == min_c())
 	{
-		pa->precision--;
-		pa->width--;
+		pa.precision--;
+		pa.width--;
 	}
 	if (pa.left)
 		pf_spaces(pa.width);
 }
 
-void 	pf_pint(int nbr, t_params *pa)
+void 	pf_pchard(char nbr, t_params *pa)
 {
-	int min;
+	char min;
 
-	if ((min = (nbr == min_i())))
+	if ((min = (nbr == min_c())))
 	{
 		pa->neg = 1;
-		pf_pint((nbr - 1) / pa->base, pa);
+		pf_pchard((nbr - 1) / pa->base, pa);
 	}
 	if (nbr < 0)
 	{
@@ -51,7 +56,7 @@ void 	pf_pint(int nbr, t_params *pa)
 	pa->precision--;
 	if ((nbr / pa->base || (pa->precision > 0)
 	|| (pa->zero && pa->width > 0)) && !min)
-		pf_pint(nbr / (int)pa->base, pa);
+		pf_pchard(nbr / (char)pa->base, pa);
 	else if (!min)
 	{
 		if (!pa->zero && !pa->left)

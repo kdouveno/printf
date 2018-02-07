@@ -1,13 +1,32 @@
-NAME = pf
+NAME = libftprintf.a
 SRC_PATH = src
-SRC_NAME = main.c\
-			ft_printf.c\
+SRC_NAME =	ft_printf.c\
 			pf_putchar.c\
 			pf_putint.c\
+			pf_putchard.c\
+			pf_putlong.c\
+			pf_putllong.c\
+			pf_putshort.c\
 			pf_charsets.c\
 			pf_double.c\
-			pf_string.c\
-			pf_size_secure.c
+			pf_putstr.c\
+			pf_putuni.c\
+			pf_putcuni.c\
+			pf_putuint.c\
+			pf_putulong.c\
+			pf_putullong.c\
+			pf_putushort.c\
+			pf_putuchard.c\
+			pf_putoint.c\
+			pf_putxint.c\
+			pf_putxshort.c\
+			pf_putxchard.c\
+			pf_putxlong.c\
+			pf_putxllong.c\
+			pf_putxmaj.c\
+			pf_putc.c\
+			pf_size_secure.c\
+			pf_size_secure_two.c
 OBJ_PATH = obj
 CFLAGS = -I includes -I libft/includes
 FLAGS = -Wall -Werror -Wextra
@@ -21,8 +40,8 @@ all: $(NAME)
 
 $(NAME): $(OBJ) libft/*.c libft/includes/*.h
 	@make -C libft
-	@gcc $(FLAGS) $(CFLAGS) $(SRC) -Llibft -lft -o $(NAME)
-	@printf '\033[32m[ ✔ ] %s\n\033[0m' "Create printf"
+	@libtool -static -o $(NAME) $(OBJ) libft/libft.a
+	@printf '\033[32m[ ✔ ] %s\n\033[0m' "Create libftprintf.a"
 
 obj/%.o: src/%.c
 	@mkdir -p obj

@@ -42,7 +42,7 @@ static int		pc_core(char c, int param)
 	}
 	else
 	{
-		write(1, buffer, (out = ft_strlen(buffer)));
+		write(1, buffer ? buffer : "", (out = buffer ? pos : 0));
 		free(buffer);
 		buffer = NULL;
 		pos = 0;

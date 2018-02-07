@@ -16,6 +16,7 @@
 # include <stdarg.h>
 # include <stdio.h>
 # include <stdlib.h>
+# include <locale.h>
 # include "libft.h"
 # define BS 8
 
@@ -28,6 +29,7 @@ typedef struct	s_params
 	unsigned short	neg;
 	unsigned short	pos;
 	unsigned short	zero;
+	unsigned short	hash;
 }				t_params;
 
 typedef struct	s_ends
@@ -58,12 +60,45 @@ void			pf_putdouble(va_list p, t_params pformat);
 
 void			pf_putstring(va_list p, t_params pa);
 
+void 			pf_putstr(va_list p, t_params pa);
+void			pf_pstr(char *c, t_params pa);
+
+void			pf_putuni(va_list p, t_params pa);
+void			ft_intuni(int c);
+int				ft_miw(int c);
+
+void			pf_putcuni(va_list p, t_params pa);
+
 void			pf_putuint(va_list p, t_params pformat);
+void			pf_putulong(va_list p, t_params pformat);
+void			pf_putullong(va_list p, t_params pformat);
+void			pf_putushort(va_list p, t_params pformat);
+void			pf_putuchard(va_list p, t_params pformat);
+
+void			pf_putoint(va_list p, t_params pformat);
+void			pf_putxint(va_list p, t_params pformat);
+void			pf_putxlong(va_list p, t_params pformat);
+void			pf_putxllong(va_list p, t_params pformat);
+void			pf_putpointer(va_list p, t_params pformat);
+void			pf_putxshort(va_list p, t_params pformat);
+void			pf_putxchard(va_list p, t_params pformat);
+
+void			pf_putmxint(va_list p, t_params pformat);
+void			pf_putmxshort(va_list p, t_params pformat);
+void			pf_putmxchard(va_list p, t_params pformat);
+void			pf_putmxlong(va_list p, t_params pformat);
+void			pf_putmxllong(va_list p, t_params pformat);
+
+void			pf_putc(va_list p, t_params pformat);
+
+void			pf_escape(va_list p, t_params pformat);
+
 void			pf_putshort(va_list p, t_params pa);
 void 			pf_pshort(short nbr, t_params *pa);
 void			pf_putchard(va_list p, t_params pa);
 void			pf_pchard(char nbr, t_params *pa);
 void			pf_putlong(va_list p, t_params pa);
+void			pf_putllong(va_list p, t_params pa);
 void			pf_plong(long nbr, t_params *pa);
 void			pf_putc(va_list p, t_params pformat);
 void			pc_fill(t_params *pa);
@@ -75,5 +110,7 @@ long			min_l();
 int				min_i();
 short			min_s();
 char			min_c();
+size_t			min_st();
+intmax_t		min_im();
 
 #endif

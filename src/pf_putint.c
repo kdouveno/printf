@@ -14,7 +14,7 @@
 
 void	pf_putint(va_list p, t_params pa)
 {
-	long long nbr;
+	int nbr;
 
 	pa.width -= 1;
 	if (pa.left || pa.precision != -1)
@@ -22,7 +22,12 @@ void	pf_putint(va_list p, t_params pa)
 	nbr = va_arg(p, int);
 	if (nbr > 0 && !pa.pos)
 		pa.width++;
-	pf_pint(nbr, &pa);
+	if (nbr == 0)
+			pa.width++;
+	if (pa.precision != 0 || nbr != 0)
+		pf_pint(nbr, &pa);
+	else
+		pa.left = 1;
 	if (nbr == min_i())
 	{
 		pa.precision--;
@@ -39,6 +44,8 @@ void 	pf_pint(int nbr, t_params *pa)
 	if ((min = (nbr == min_i())))
 	{
 		pa->neg = 1;
+		pa->width--;
+		pa->precision--;
 		pf_pint((nbr - 1) / pa->base, pa);
 	}
 	if (nbr < 0)
@@ -68,6 +75,13 @@ void	pf_prefix(t_params *pa)
 		pc_putchar('+');
 	else if (pa->pos == 2)
 		pc_putchar(' ');
+	else if (pa->hash && pa->base == 8)
+		pc_putchar('0');
+	else if (pa->hash && pa->base == 16)
+	{
+		pc_putchar('0');
+		pc_putchar(pa->pos == 80 ? 'X' : 'x');
+	}
 }
 //afiche n espace.
 void pf_spaces(int n)
