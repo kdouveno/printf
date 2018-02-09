@@ -27,6 +27,7 @@ void	putdouble(double d, int precision)
 int		main(void)
 {
 	setlocale(LC_ALL, "");
-	ft_printf("%p", NULL);
+	ft_printf("\033[35m%010.5d\n", 0);
+	printf("\033[36m%010.5d\n", 0);
 	return 0;
 }

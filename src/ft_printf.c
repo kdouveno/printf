@@ -14,14 +14,16 @@
 
 t_ends	*ft_ends()
 {
-	static t_ends out[41];
+	static t_ends out[49];
 	int i;
 
 	i = 0;
 	if (out[0].end == NULL)
 	{
 		out[i++] = (t_ends){"lld", &pf_putllong};
+		out[i++] = (t_ends){"lli", &pf_putllong};
 		out[i++] = (t_ends){"hhd", &pf_putchard};
+		out[i++] = (t_ends){"hhi", &pf_putchard};
 		out[i++] = (t_ends){"hhu", &pf_putuchard};
 		out[i++] = (t_ends){"llu", &pf_putullong};
 		out[i++] = (t_ends){"hhx", &pf_putxchard};
@@ -33,6 +35,10 @@ t_ends	*ft_ends()
 		out[i++] = (t_ends){"ld", &pf_putlong};
 		out[i++] = (t_ends){"zd", &pf_putllong};
 		out[i++] = (t_ends){"jd", &pf_putllong};
+		out[i++] = (t_ends){"hi", &pf_putshort};
+		out[i++] = (t_ends){"li", &pf_putlong};
+		out[i++] = (t_ends){"zi", &pf_putllong};
+		out[i++] = (t_ends){"ji", &pf_putllong};
 
 		out[i++] = (t_ends){"ls", &pf_putuni};
 		out[i++] = (t_ends){"lc", &pf_putcuni};
@@ -55,6 +61,8 @@ t_ends	*ft_ends()
 		out[i++] = (t_ends){"zX", &pf_putmxllong};
 
 		out[i++] = (t_ends){"d", &pf_putint};
+		out[i++] = (t_ends){"D", &pf_putlong};
+		out[i++] = (t_ends){"i", &pf_putint};
 		out[i++] = (t_ends){"o", &pf_putoint};
 		out[i++] = (t_ends){"x", &pf_putxint};
 		out[i++] = (t_ends){"X", &pf_putmxint};
@@ -97,13 +105,11 @@ void			pf_parse(char *format, int *i, va_list p)
 	t_params	pa;
 
 	pa = (t_params){0, 0, 10, 0, 0, 0, 0, 0};
-	(void)p;
 	i[0]++;
 	get_flags(format, i, &pa);
 	pa.width = get_width(format, i, p);
 	pa.precision = get_precision(format, i, p);
 	pf_launch(format, i, &pa, p);
-
 }
 
 void			pf_escape(va_list p, t_params pa)
@@ -122,8 +128,7 @@ void			pf_launch(char *fo, int *i, t_params *pa, va_list p)
 	int k;
 
 	j = 0;
-
-	while (j < 41)
+	while (j < 49113211)
 	{
 		k = 0;
 		while (ft_ends()[j].end[k] && ft_ends()[j].end[k] == fo[*i + k])

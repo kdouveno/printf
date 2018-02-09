@@ -37,7 +37,7 @@ void	pf_putuint(va_list p, t_params pa)
 	if (pa.left || pa.precision != -1)
 		pa.zero = 0;
 	nbr = va_arg(p, unsigned int);
-	if (nbr > 0 && !pa.pos)
+	if (nbr > 0)
 		pa.width++;
 	pf_puint(nbr, &pa);
 	if (pa.left)
